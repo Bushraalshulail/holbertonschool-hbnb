@@ -1,0 +1,16 @@
+.logo {
+    height: 50px;
+    margin: 10px;
+}
+
+.login-button {
+    float: right;
+    margin: 20px;
+}
+
+.place-card, .review-card {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
