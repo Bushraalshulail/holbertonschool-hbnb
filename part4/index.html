@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Places - HBnB</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <title>HBNB – Smoke Test</title>
 </head>
 <body>
-    <header>
-        <img src="images/logo.png" class="logo" alt="HBnB Logo">
-        <a href="login.html" class="login-button">Login</a>
-    </header>
+  <h1>HBNB Frontend (Part 4)</h1>
+  <p>API response will appear below:</p>
+  <pre id="out">Loading...</pre>
 
-    <nav>
-        <a href="index.html">Home</a>
-    </nav>
+  <script>
+    // tell the frontend where your API lives
+    // if your API is running on a different host/port, change this
+    const BASE_URL = "http://127.0.0.1:5000/api/v1";
 
-    <main>
-        <h2>Places</h2>
-        <div class="place-card">
-            <h3>Place Name</h3>
-            <p>Price: $100</p>
-            <a href="place.html">View Details</a>
-        </div>
-
-      
-    </main>
-
-    <footer>
-        <p>All rights reserved © HBnB</p>
-    </footer>
+    async function testFetch() {
+      const out = document.getElementById('out');
+      try {
+        const res = await fetch(`${BASE_URL}/places`);
+        // if your endpoint requires auth, this may be 401 — that's fine for now
+        const text = await res.text();
+        out.textContent = `Status: ${res.status}\n\n` + text;
+      } catch (e) {
+        out.textContent = 'Fetch error: ' + e.message;
+      }
+    }
+    testFetch();
+  </script>
 </body>
 </html>
