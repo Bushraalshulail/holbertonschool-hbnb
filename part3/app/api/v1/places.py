@@ -61,8 +61,9 @@ class PlaceList(Resource):
     def post(self):
         """Authenticated: Create new place"""
         payload = api.payload
-        current_user = get_jwt_identity()
-        is_admin = current_user.get('is_admin', False)
+        user_id = get_jwt_identity()            # this is a STRING user id
+        claims = get_jwt()
+        is_admin = bool(claims.get('is_admin', False))
         user_id = current_user['id']
 
         # Allow admins to set owner_id manually
@@ -137,3 +138,4 @@ def serialize_place(place):
             for r in getattr(place, 'reviews', [])
         ]
     }
+
