@@ -64,7 +64,7 @@ class PlaceList(Resource):
         user_id = get_jwt_identity()            # this is a STRING user id
         claims = get_jwt()
         is_admin = bool(claims.get('is_admin', False))
-        user_id = current_user['id']
+        user_id = get_jwt_identity()
 
         # Allow admins to set owner_id manually
         owner_id = payload.get('owner_id', user_id)
@@ -96,7 +96,7 @@ class PlaceResource(Resource):
         current_user = get_jwt_identity()
         claims = get_jwt()
         is_admin = bool(claims.get('is_admin', False))
-        user_id = current_user['id']
+        user_id = get_jwt_identity()
 
         place = facade.get_place(place_id)
         if not place:
@@ -139,5 +139,6 @@ def serialize_place(place):
             for r in getattr(place, 'reviews', [])
         ]
     }
+
 
 
