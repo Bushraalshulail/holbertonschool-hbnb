@@ -94,7 +94,8 @@ class PlaceResource(Resource):
     def put(self, place_id):
         """Authenticated: Update owned place or any place if admin"""
         current_user = get_jwt_identity()
-        is_admin = current_user.get('is_admin', False)
+        claims = get_jwt()
+        is_admin = bool(claims.get('is_admin', False))
         user_id = current_user['id']
 
         place = facade.get_place(place_id)
@@ -138,4 +139,5 @@ def serialize_place(place):
             for r in getattr(place, 'reviews', [])
         ]
     }
+
 
