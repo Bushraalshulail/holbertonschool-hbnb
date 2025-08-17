@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Review</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" href="icon.png"/>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo-link">
+        <img src="logo.png" alt="HBnB Logo" class="logo"/>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <form id="revForm" class="place-card add-review" style="max-width:560px">
+      <h2>Add Review</h2>
+
+      <label for="rating">Rating (1–5)</label>
+      <input type="number" id="rating" min="1" max="5" required/>
+
+      <label for="comment">Comment</label>
+      <textarea id="comment" rows="4" required></textarea>
+
+      <button type="submit" class="details-button">Submit</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>All rights reserved © 2025</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
