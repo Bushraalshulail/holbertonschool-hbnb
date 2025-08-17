@@ -1,16 +1,65 @@
-.logo {
-    height: 50px;
-    margin: 10px;
+:root{
+  --bg:#f9fafb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#dddddd;
+  --brand:#2563eb;
+  --brand-contrast:#fff;
 }
 
-.login-button {
-    float: right;
-    margin: 20px;
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
+  color:var(--text); background:var(--bg);
 }
 
+/* Header / Nav */
+header{ background:#fff; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10}
+.nav{ display:flex; align-items:center; justify-content:space-between; max-width:980px; margin:0 auto; padding:12px 16px;}
+.logo{ height:36px; width:auto; display:block }
+.login-button{ padding:8px 12px; border-radius:10px; border:1px solid var(--border); text-decoration:none; color:var(--text) }
+.login-button:hover{ background:#f3f4f6 }
+
+/* Layout */
+main{ max-width:980px; margin:0 auto; padding:20px 16px; }
+footer{ text-align:center; padding:24px 16px; color:var(--muted) }
+
+/* Filters */
+.filters{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.filters label{ color:var(--muted); font-size:14px }
+.filters select{ padding:6px 8px; border:1px solid var(--border); border-radius:8px; background:#fff }
+.ml8{ margin-left:8px }
+
+/* Cards */
 .place-card, .review-card {
-    margin: 20px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+  background:var(--card); border:1px solid #ddd; border-radius:10px;
+  margin:20px; padding:10px;
+  box-shadow:0 1px 2px rgba(0,0,0,0.04);
+}
+.place-card h3{ margin:0 0 8px 0 }
+.place-card p{ margin:0 0 8px 0; color:#374151 }
+
+.details-button{
+  display:inline-block; padding:8px 12px; border-radius:10px;
+  border:1px solid var(--brand);
+  background:var(--brand); color:var(--brand-contrast); text-decoration:none;
+  cursor:pointer
+}
+.details-button:hover{ opacity:.95 }
+
+/* Details layout */
+.place-details{ background:transparent; padding:0; margin:0 }
+.place-info{ background:var(--card); border:1px solid #ddd; border-radius:10px; margin:20px; padding:10px }
+
+/* Forms */
+form.place-card label{ display:block; margin:6px 0 4px }
+form.place-card input, form.place-card textarea{
+  width:100%; padding:8px; border:1px solid var(--border); border-radius:8px; background:#fff
+}
+form.place-card button{ margin-top:10px }
+
+/* Responsive */
+@media (max-width:600px){
+  .place-card, .review-card, .place-info{ margin:12px }
 }
