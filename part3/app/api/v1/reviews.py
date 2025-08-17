@@ -4,15 +4,17 @@ from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
 
+# Client sends: text, rating, place_id  (user_id is taken from JWT)
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id': fields.String(required=True, description='ID of the user'),
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
+# What we return
 review_output = api.inherit('ReviewOut', review_model, {
-    'id': fields.String(description='Review ID')
+    'id': fields.String(description='Review ID'),
+    'user_id': fields.String(description='ID of the user who wrote the review')
 })
 
 @api.route('/')
@@ -21,14 +23,16 @@ class ReviewList(Resource):
     @api.marshal_with(review_output, code=201)
     @jwt_required()
     def post(self):
-        current_user = get_jwt_identity()
+        user_id = get_jwt_identity()                  # STRING user id
         claims = get_jwt()
         is_admin = bool(claims.get('is_admin', False))
-        payload = api.payload
+        payload = dict(api.payload or {})
 
-        # فقط المستخدم العادي يُجبر على كتابة مراجعة باسمه
-        if not is_admin and payload['user_id'] != current_user['id']:
-            return {'error': 'Unauthorized action'}, 403
+        # Non-admins can only post as themselves; admins may optionally specify user_id
+        if not is_admin:
+            payload['user_id'] = user_id
+        else:
+            payload['user_id'] = payload.get('user_id') or user_id
 
         try:
             review = facade.create_review(payload)
@@ -53,7 +57,7 @@ class ReviewResource(Resource):
     @api.expect(review_model)
     @jwt_required()
     def put(self, review_id):
-        current_user = get_jwt_identity()
+        user_id = get_jwt_identity()
         claims = get_jwt()
         is_admin = bool(claims.get('is_admin', False))
         review = facade.get_review(review_id)
@@ -61,18 +65,18 @@ class ReviewResource(Resource):
         if not review:
             api.abort(404, "Review not found")
 
-        if not is_admin and review.user_id != current_user['id']:
+        if not is_admin and review.user_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         try:
-            updated = facade.update_review(review_id, api.payload)
+            updated = facade.update_review(review_id, dict(api.payload or {}))
             return {'message': 'Review updated successfully'}, 200
         except ValueError as ve:
             return {'error': str(ve)}, 400
 
     @jwt_required()
     def delete(self, review_id):
-        current_user = get_jwt_identity()
+        user_id = get_jwt_identity()
         claims = get_jwt()
         is_admin = bool(claims.get('is_admin', False))
         review = facade.get_review(review_id)
@@ -80,7 +84,7 @@ class ReviewResource(Resource):
         if not review:
             api.abort(404, "Review not found")
 
-        if not is_admin and review.user_id != current_user['id']:
+        if not is_admin and review.user_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
         facade.delete_review(review_id)
@@ -95,4 +99,3 @@ class PlaceReviewList(Resource):
             return facade.get_reviews_by_place(place_id)
         except ValueError as ve:
             return {'error': str(ve)}, 404
-
