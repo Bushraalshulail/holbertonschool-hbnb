@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Place Details - HBnB</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Place Details</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" href="icon.png"/>
 </head>
 <body>
-    <header>
-        <img src="images/logo.png" class="logo" alt="HBnB Logo">
-        <a href="login.html" class="login-button">Login</a>
-    </header>
-
-    <nav>
-        <a href="index.html">Home</a>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo-link">
+        <img src="logo.png" alt="HBnB Logo" class="logo"/>
+      </a>
+      <a href="login.html" class="login-button" id="loginLink">Login</a>
     </nav>
+  </header>
 
-    <main>
-        <h2>Place Name</h2>
-        <p>Owner: John Doe</p>
-        <p>Description: A nice and cozy place near the beach.</p>
+  <main>
+    <section id="place" class="place-details" aria-live="polite">Loading…</section>
 
-        <h3>Reviews</h3>
-        <div class="review-card">
-            <p><strong>Alice:</strong> Great stay! 5/5</p>
-        </div>
+    <section>
+      <h2>Reviews</h2>
+      <div id="reviews">
+        <!-- review-card items -->
+      </div>
+      <div id="addReviewCta" style="margin-top:16px;"></div>
+    </section>
+  </main>
 
-        
+  <footer>
+    <p>All rights reserved © 2025</p>
+  </footer>
 
-        <a href="add_review.html">Add Review</a>
-    </main>
-
-    <footer>
-        <p>All rights reserved © HBnB</p>
-    </footer>
+  <script src="scripts.js"></script>
 </body>
 </html>
