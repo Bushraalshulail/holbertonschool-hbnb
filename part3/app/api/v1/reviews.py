@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
@@ -22,7 +22,8 @@ class ReviewList(Resource):
     @jwt_required()
     def post(self):
         current_user = get_jwt_identity()
-        is_admin = current_user.get('is_admin', False)
+        claims = get_jwt()
+        is_admin = bool(claims.get('is_admin', False))
         payload = api.payload
 
         # فقط المستخدم العادي يُجبر على كتابة مراجعة باسمه
@@ -53,7 +54,8 @@ class ReviewResource(Resource):
     @jwt_required()
     def put(self, review_id):
         current_user = get_jwt_identity()
-        is_admin = current_user.get('is_admin', False)
+        claims = get_jwt()
+        is_admin = bool(claims.get('is_admin', False))
         review = facade.get_review(review_id)
 
         if not review:
@@ -71,7 +73,8 @@ class ReviewResource(Resource):
     @jwt_required()
     def delete(self, review_id):
         current_user = get_jwt_identity()
-        is_admin = current_user.get('is_admin', False)
+        claims = get_jwt()
+        is_admin = bool(claims.get('is_admin', False))
         review = facade.get_review(review_id)
 
         if not review:
@@ -92,3 +95,4 @@ class PlaceReviewList(Resource):
             return facade.get_reviews_by_place(place_id)
         except ValueError as ve:
             return {'error': str(ve)}, 404
+
