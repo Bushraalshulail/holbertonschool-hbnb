@@ -4,9 +4,9 @@ from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
 
-# Client sends: text, rating, place_id  (user_id is taken from JWT)
+# Client sends: comment, rating, place_id  (user_id comes from JWT)
 review_model = api.model('Review', {
-    'text': fields.String(required=True, description='Text of the review'),
+    'comment': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
     'place_id': fields.String(required=True, description='ID of the place')
 })
@@ -27,6 +27,10 @@ class ReviewList(Resource):
         claims = get_jwt()
         is_admin = bool(claims.get('is_admin', False))
         payload = dict(api.payload or {})
+
+        # Accept 'text' from older clients but normalize to 'comment'
+        if 'text' in payload and 'comment' not in payload:
+            payload['comment'] = payload.pop('text')
 
         # Non-admins can only post as themselves; admins may optionally specify user_id
         if not is_admin:
@@ -68,8 +72,12 @@ class ReviewResource(Resource):
         if not is_admin and review.user_id != user_id:
             return {'error': 'Unauthorized action'}, 403
 
+        payload = dict(api.payload or {})
+        if 'text' in payload and 'comment' not in payload:
+            payload['comment'] = payload.pop('text')
+
         try:
-            updated = facade.update_review(review_id, dict(api.payload or {}))
+            updated = facade.update_review(review_id, payload)
             return {'message': 'Review updated successfully'}, 200
         except ValueError as ve:
             return {'error': str(ve)}, 400
