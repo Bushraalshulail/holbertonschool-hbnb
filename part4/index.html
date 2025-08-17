@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>List of Places</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>List of Places</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="icon" href="icon.png"/>
 </head>
 <body>
-    <header>
-        <!-- logo to satisfy rubric (class="logo") -->
-        <img src="logo.png" alt="App Logo" class="logo" />
-        <nav>
-            <!-- Home link per rubric -->
-            <a href="index.html">Home</a>
-            <!-- Give login link the required class -->
-            <a href="login.html" id="login-link" class="login-button">Login</a>
-            <!-- a logout button will be toggled by JS when logged in -->
-            <button id="logout-btn" style="display:none;">Logout</button>
-        </nav>
-    </header>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo-link">
+        <img src="logo.png" alt="HBnB Logo" class="logo"/>
+      </a>
+      <a href="login.html" class="login-button" id="login-link">Login</a>
+    </nav>
+  </header>
 
-    <main>
-        <section id="filter" class="place-info"><!-- rubric-friendly class -->
-            <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <!-- Options populated dynamically -->
-            </select>
-            <!-- country filter mentioned in tasks -->
-            <label for="country-filter" style="margin-left:12px;">Country:</label>
-            <select id="country-filter">
-                <option value="">All</option>
-            </select>
-        </section>
+  <main>
+    <section id="filter" class="filters">
+      <label for="country-filter">Country:</label>
+      <select id="country-filter">
+        <option value="__all__">All</option>
+      </select>
 
-        <section id="places-list">
-            <!-- Cards populated dynamically -->
-        </section>
-    </main>
+      <label for="price-filter" class="ml8">Max Price:</label>
+      <select id="price-filter">
+        <option value="__all__">Any</option>
+        <option value="50">≤ 50</option>
+        <option value="100">≤ 100</option>
+        <option value="150">≤ 150</option>
+        <option value="200">≤ 200</option>
+        <option value="300">≤ 300</option>
+      </select>
+    </section>
 
-    <footer>
-        <p>All rights reserved © 2025</p>
-    </footer>
+    <section id="places-list" aria-live="polite">
+      <!-- List of place cards goes here -->
+    </section>
+  </main>
 
-    <script src="scripts.js"></script>
+  <footer>
+    <p>All rights reserved © 2025</p>
+  </footer>
+
+  <script src="scripts.js"></script>
 </body>
 </html>
