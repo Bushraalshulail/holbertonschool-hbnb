@@ -1,3 +1,5 @@
+/* jshint esversion: 11, browser: true */
+
 /* ---------- tiny helpers ---------- */
 function getCookie(name){
   return document.cookie.split("; ").reduce((acc,c)=>{
@@ -75,14 +77,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         $country.appendChild(opt);
       });
 
-      function render(){
+      // use a function expression (arrow) instead of a function declaration inside the block
+      const render = () => {
         const chosenCountry = $country.value;
         const maxPrice = $price.value === "__all__" ? Infinity : Number($price.value);
 
         list.innerHTML = "";
         const filtered = places.filter(p=>{
           const inCountry = (chosenCountry==="__all__") || ((p.country||"") === chosenCountry);
-          const inPrice = (typeof p.price === "number" ? p.price : Number(p.price)) <= maxPrice;
+          const numericPrice = (typeof p.price === "number" ? p.price : Number(p.price));
+          const inPrice = (Number.isFinite(numericPrice) ? numericPrice : Infinity) <= maxPrice;
           return inCountry && inPrice;
         });
 
@@ -101,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           `;
           list.appendChild(card);
         });
-      }
+      };
 
       $country.addEventListener("change", render);
       $price.addEventListener("change", render);
